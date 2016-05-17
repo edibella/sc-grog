@@ -1,3 +1,3 @@
 function test
-  PackageManagement.run_tests('ScGrog')
+  MatlabSpec.run_tests('ScGrog')
 end
