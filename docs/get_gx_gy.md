@@ -1,4 +1,4 @@
-# scGROG
+# ScGrog
 
 Obtain unit, horizontal and linear GRAPPA operators from radial data.
 Based on:
@@ -12,7 +12,7 @@ This package has only one function: `get_gx_gy.``
 
 ## Inputs
 
-The expected input to `get_gx_gy` is `KSpaceData`. A struct with the following fields
+The expected input to `get_gx_gy` is a struct with the following fields
 
 * **kSpace** k-space data in this order: nReadout, nRay, (nTime,) nCoil.
 
@@ -29,14 +29,12 @@ Returns nCoil by nCoil, Gx and Gy matrices.
 
 ### Theory
 
-scGROG takes radial data as input. Each ray has a known slope and thus a known horizontal distance `n` and a known vertical distance `m` between adjacent equi-spaced points on the ray.
+scGROG takes radial data as input. Each ray has a known slope and thus a known horizontal distance `n` and a known vertical distance `m` between adjacent equispaced points on the ray.
 
 In terms of grappa operators, we could call the operator that transforms intensities in the direction of the ray "G_ray". We can write it in terms of G_x and G_y where G_x and G_y are the unit grappa operators for transformations in the x and y directions.
 
 These matrices are able to transform signal intensity at one location to the signal intensity at another location like so:
 
- ```
-  -
                *
               /|
          G   / | G_y^m
@@ -48,7 +46,6 @@ These matrices are able to transform signal intensity at one location to the sig
         G_x^n
 
      G = G_x^n * G_y^m
- ```
 
 For each ray, the steps n and m will be different due to the angle so
 let's just consider G_ray for 1 ray:
@@ -98,23 +95,23 @@ With linear algebra we know how to take a system of equations and turn them into
    1) Turn the stack of ln(G_ray1), ln(G_ray2), etc into a 3D matrix
       called v:
 
- ```
- -
-                /                    \
-               | 1-1-1  1-2-1  etc .  |
-               | 2-1-1  2-2-1   .  .  |
-   v_ray1 =    | 3-1-1  3-2-1   .  .  |
-               | 4-1-1  4-2-1   .  .  |
-                \                    /
+```
+                 /                    \
+                | 1-1-1  1-2-1  etc .  |
+                | 2-1-1  2-2-1   .  .  |
+    v_ray1 =    | 3-1-1  3-2-1   .  .  |
+                | 4-1-1  4-2-1   .  .  |
+                 \                    /
+```
 
-
+```
                 /                    \
                | 1-1-2  1-2-2  etc .  |
                | 2-1-2  2-2-2   .  .  |
    v_ray2 =    | 3-1-2  3-2-2   .  .  |
                | 4-1-2  4-2-2   .  .  |
                 \                    /
- ```
+```
 
 In the above, 1-1-1 means the coefficient in G_ray1 that maps
 coil1 to coil1, 4-1-2 means the coefficient in G_ray 2 that maps
@@ -152,3 +149,5 @@ pinv(NM) * v(row,col,:) = [ln(G_x(row,col)); ln(G_y(row,col))]
 ```
 
 And lastly solve for G_x and G_y using the matrix exponent!
+
+The details are in the code, and the paper, so I hope this little explanation is just one more way of trying to understand it.

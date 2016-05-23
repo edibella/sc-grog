@@ -15,7 +15,7 @@ function KSpaceData = flatten_rays(KSpaceData)
   ndimsTrajectory = ndims(KSpaceData.trajectory); % 3
   sizeDiff = ndimsKSpace - ndimsTrajectory; % 1
   if sizeDiff < 1
-    error('Data doesn''t seem suitable for GROG interpolation. Please check data and read docs on how to use `pre_interpolate`')
+    error('Data doesn''t seem suitable for GROG interpolation. Please check data and read docs on how to use `get_gx_gy`')
   end
 
   % Now figure out where the rays are and smash them.

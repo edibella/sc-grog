@@ -3,7 +3,7 @@ function [gX, gY] = get_gx_gy(KSpaceData)
 
   % Check Data struct
   requiredFields = { 'kSpace', 'trajectory', 'cartesianSize' };
-  PackageManagement.verify_struct(KSpaceData, requiredFields, 'KSpaceData');
+  verify_struct(KSpaceData, requiredFields, 'KSpaceData');
 
   % If kSpace has more than three dimensions flatten the rays
   if ndims(KSpaceData.kSpace) > 3
